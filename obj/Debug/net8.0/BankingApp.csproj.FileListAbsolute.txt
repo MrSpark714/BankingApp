@@ -12,3 +12,4 @@ C:\Users\Sohaib\Documents\C#\BankingApp\obj\Debug\net8.0\refint\BankingApp.dll
 C:\Users\Sohaib\Documents\C#\BankingApp\obj\Debug\net8.0\BankingApp.pdb
 C:\Users\Sohaib\Documents\C#\BankingApp\obj\Debug\net8.0\BankingApp.genruntimeconfig.cache
 C:\Users\Sohaib\Documents\C#\BankingApp\obj\Debug\net8.0\ref\BankingApp.dll
+C:\Users\Sohaib\Documents\C#\BankingApp\obj\Debug\net8.0\BankingApp.sourcelink.json

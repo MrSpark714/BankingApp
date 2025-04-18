@@ -9,7 +9,7 @@ class Account_create{
     private string Father_Name;
     private static int Unique_Id = 6996910;
     private int Account_Id;
-    private int _pin;
+    private string _pin;
        #endregion
     #region Properties of Data Members (Getter & Setter)
     public string Name{
@@ -35,7 +35,7 @@ class Account_create{
      public int Id{
         get {return Account_Id;}
     }
-    public int Pin{
+    public string Pin{
         get {return _pin;}
         set {_pin = value;}
     }
@@ -49,8 +49,5 @@ class Account_create{
         Unique_Id++;
         Account_Id = Unique_Id;
     }
-    // public Account_create(string name, int age){ this.name = name; this.age = age;}
-    // public void display(){
-    //     Console.WriteLine($"Your name is {name}\nYour Age is {age}");
-    // }
+
 }
