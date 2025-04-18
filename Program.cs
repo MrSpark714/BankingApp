@@ -4,9 +4,9 @@ class Program{
     public static void Main(string[] args){
 
         Console.WriteLine("\tWellcome To Bank\n");
-        Console.WriteLine("1:- If you have an existing Account.");
-        Console.WriteLine("2:- Create a New Account.");
-        Console.Write("Enter Your Choice:- ");
+        Console.WriteLine("1: If you have an existing Account.");
+        Console.WriteLine("2: Create a New Account.");
+        Console.Write("Enter Your Choice: ");
         int choice = Convert.ToInt32(Console.ReadLine());
 
         switch(choice){
@@ -64,7 +64,7 @@ class Program{
                 }
                 #endregion
                 
-                #region [Inpu Age User]
+                #region [Input Age User]
                 Console.Write("Enter Your Age: ");
                 while(true){
                 int input_age = Convert.ToInt32(Console.ReadLine());
@@ -79,15 +79,32 @@ class Program{
                 }
                 #endregion
 
+                #region [Input Date of birth]
                 Console.Write("Enter Your Date of Birth (DDMMYYYY): ");
-                a1.dob = Console.ReadLine();
+                while(true){
+                string input_dob = Console.ReadLine();
+                if(input_dob.Length == 8 || string.IsNullOrEmpty(input_dob)){
+                    a1.dob = input_dob;
+                    break;
+                  }
+                else{ Console.Write("Invalid Input! Try again: "); }  
+                }
+                #endregion
 
+                #region [Input Pin Passward]
                 Console.WriteLine("Enter Your Pin Password (4-Digits only): ");
-                a1.Pin = Convert.ToInt16(Console.ReadLine());
+                while(true){
+                string input_pin = Console.ReadLine();
+                if(input_pin.Length == 4 || string.IsNullOrEmpty(input_pin)){
+                    a1.Pin = input_pin;
+                    break;
+                  }
+                else{ Console.Write("Invalid Input! Try again: "); }  
+                }
+                #endregion
                 
                 a1.DisplayInfo();
                 break;    
         }
-    //   Console.WriteLine($"{a1.Name}\n{a1.age}\n{a1.father}\n{a1.dob}\n{a1.cnic}\n{a1.Id}");
     }
 }
