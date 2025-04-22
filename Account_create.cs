@@ -42,7 +42,13 @@ class Account_create{
     #endregion
     public void DisplayInfo(){  
         Console.WriteLine("\n-------------------------------------\n");
-        Console.WriteLine($"Your Name: {Name}\nYour Father Name: {father}\nYour CNIC: {cnic}\nYour Age: {age}\nYour Date of Birth: {dob}\nYour Account Number: {Id}\n ***Account Created Successfully***");
+        Console.WriteLine($"Your Name: {Name}");
+        Console.WriteLine($"Your Father Name: {father}");
+        Console.WriteLine($"Your CNIC: {cnic}");
+        Console.WriteLine($"Your Age: {age}");
+        Console.WriteLine($"Your Date of Birth: {dob}");
+        Console.WriteLine($"Your Account Number: {Id}");
+        Console.WriteLine("***Account Created Successfully***");
     }
 
     public Account_create(){ // constructor call 
