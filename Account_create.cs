@@ -48,7 +48,8 @@ class Account_create{
         Console.WriteLine($"Your Age: {age}");
         Console.WriteLine($"Your Date of Birth: {dob}");
         Console.WriteLine($"Your Account Number: {Id}");
-        Console.WriteLine("***Account Created Successfully***");
+        Console.WriteLine("*** Account Created Successfully ***");
+        Console.WriteLine("------------------------------------------");
     }
 
     public Account_create(){ // constructor call 
