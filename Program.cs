@@ -1,17 +1,46 @@
 ﻿using System;
 namespace BankingApp;
 class Program{
-    public static void Main(string[] args){
+    private static Account_create[] accounts = new Account_create[50];
+    private static int current_Account_Index = 0;
+    public static void Main(string[] args)
+    {
 
         Console.WriteLine("\tWellcome To Bank\n");
-        Console.WriteLine("1: If you have an existing Account.");
-        Console.WriteLine("2: Create a New Account.");
-        Console.Write("Enter Your Choice: ");
-        int choice = Convert.ToInt32(Console.ReadLine());
+        while (true)
+        {
+            Console.WriteLine("1: If you have an existing Account.");
+            Console.WriteLine("2: Create a New Account.");
+            Console.WriteLine("3: Exit.");
+            Console.Write("Enter Your Choice: ");
+            int choice = Convert.ToInt32(Console.ReadLine());
 
-        switch(choice){
-            case 1:
-                Account_create a1 = new Account_create();
+            switch(choice){
+                case 1:
+                // Here making Atm processing
+                case 2:
+                    if(current_Account_Index == 50)
+                {
+                    Console.WriteLine("Maximum Account Limit Reached (50 Accounts).");
+                    break;
+                }
+                    CreateNewAccount();
+                    break;
+                case 3:
+                    Console.WriteLine("*** Thanks For Using ***");
+                    Environment.Exit(0);
+                    break;
+                default:
+                    Console.WriteLine("Invalid choice! Try again: ");
+                    break;    
+            }
+        }
+
+    }
+    // This Function is Helping to Create New Account
+    private static void CreateNewAccount()
+    {
+        Account_create a1 = new Account_create();
 
                 #region [Name Input]
                 Console.Write("Enter Your Name: ");
@@ -68,13 +97,13 @@ class Program{
                 Console.Write("Enter Your Age: ");
                 while(true){
                 int input_age = Convert.ToInt32(Console.ReadLine());
-                if(!(input_age > 18)){
+                if(input_age >= 18){
                     a1.age = input_age;
                     break;
                 }
                 else{
                     Console.Write("Error: You are under Age So don't create an Account. ");
-                    return;
+                    break;
                     }
                 }
                 #endregion
@@ -102,9 +131,10 @@ class Program{
                 else{ Console.Write("Invalid Input! Try again: "); }  
                 }
                 #endregion
-                
+
+                // Adding new account into Array
+                accounts[current_Account_Index] = a1;
+                current_Account_Index++;
                 a1.DisplayInfo();
-                break;    
-        }
     }
 }
