@@ -6,9 +6,10 @@ class Program{
     public static void Main(string[] args)
     {
 
-        Console.WriteLine("\tWellcome To Bank\n");
+        Console.WriteLine("\n\tWellcome To Bank\n");
         while (true)
         {
+            Console.WriteLine("-------------------------------------");
             Console.WriteLine("1: If you have an existing Account.");
             Console.WriteLine("2: Create a New Account.");
             Console.WriteLine("3: Exit.");
@@ -97,13 +98,17 @@ class Program{
                 Console.Write("Enter Your Age: ");
                 while(true){
                 int input_age = Convert.ToInt32(Console.ReadLine());
+                if(input_age <= 0){
+                    Console.Write("Invalid Input! Try Again: ");
+                    continue;
+                }
                 if(input_age >= 18){
                     a1.age = input_age;
                     break;
                 }
                 else{
-                    Console.Write("Error: You are under Age So don't create an Account. ");
-                    break;
+                    Console.WriteLine("Error: You are under Age So don't create an Account. ");
+                    return;
                     }
                 }
                 #endregion
@@ -112,11 +117,14 @@ class Program{
                 Console.Write("Enter Your Date of Birth (DDMMYYYY): ");
                 while(true){
                 string input_dob = Console.ReadLine();
-                if(input_dob.Length == 8 || string.IsNullOrEmpty(input_dob)){
+                if(string.IsNullOrEmpty(input_dob) || input_dob.Length < 8){
+                    Console.Write("Invalid Input! Try again: ");
+                }
+                if(input_dob.Length == 8){
                     a1.dob = input_dob;
                     break;
                   }
-                else{ Console.Write("Invalid Input! Try again: "); }  
+                
                 }
                 #endregion
 
@@ -124,11 +132,13 @@ class Program{
                 Console.WriteLine("Enter Your Pin Password (4-Digits only): ");
                 while(true){
                 string input_pin = Console.ReadLine();
-                if(input_pin.Length == 4 || string.IsNullOrEmpty(input_pin)){
+                if(string.IsNullOrEmpty(input_pin) || input_pin.Length < 4){
+                    Console.Write("Invalid Input! Try again: ");
+                }
+                if(input_pin.Length == 4){
                     a1.Pin = input_pin;
                     break;
-                  }
-                else{ Console.Write("Invalid Input! Try again: "); }  
+                  } 
                 }
                 #endregion
 
