@@ -7,9 +7,9 @@ class Account_create{
     private string date_of_birth;
     private string CNIC;
     private string Father_Name;
-    private static int Unique_Id = 6996910;
-    private int Account_Id;
+    private string Account_Id;
     private string _pin;
+    private static int AccountCount = 1;
        #endregion
     #region Properties of Data Members (Getter & Setter)
     public string Name{
@@ -32,7 +32,7 @@ class Account_create{
         get {return date_of_birth;}
         set {date_of_birth = value;}
     }
-     public int Id{
+     public string Id{
         get {return Account_Id;}
     }
     public string Pin{
@@ -40,6 +40,12 @@ class Account_create{
         set {_pin = value;}
     }
     #endregion
+    private string GenerateAccountID(){
+        string id = $"BANK2024{AccountCount.ToString("D5")}";
+        Account_Id = id;
+        AccountCount++;
+        return id;
+    }
     public void DisplayInfo(){  
         Console.WriteLine("\n-------------------------------------\n");
         Console.WriteLine($"Your Name: {Name}");
@@ -47,14 +53,12 @@ class Account_create{
         Console.WriteLine($"Your CNIC: {cnic}");
         Console.WriteLine($"Your Age: {age}");
         Console.WriteLine($"Your Date of Birth: {dob}");
-        Console.WriteLine($"Your Account Number: {Id}");
-        Console.WriteLine("*** Account Created Successfully ***");
-        Console.WriteLine("------------------------------------------");
+        Console.WriteLine($"Your Account Number: {GenerateAccountID()}");
+        Console.WriteLine("*** Account Created Successfully ***\n");
+        Console.WriteLine("-------------------------------------\n");
     }
 
-    public Account_create(){ // constructor call 
-        Unique_Id++;
-        Account_Id = Unique_Id;
-    }
+    public Account_create(){ // constructor
 
+    }
 }
