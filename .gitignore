@@ -1,4 +1,5 @@
 "bin/obj/
-*.exe 
-*.pdb 
-*.dll" 
+*.csproj 
+*.sln 
+*bin
+*obj" 
