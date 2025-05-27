@@ -1,7 +1,9 @@
 ﻿using System;
 namespace BankingApp;
-class Program{
-    private static Account_create[] accounts = new Account_create[50];
+
+class Program
+{
+    private static CurrentAccount[] accounts = new CurrentAccount[50];
     private static int current_Account_Index = 0;
     public static void Main(string[] args)
     {
@@ -10,21 +12,23 @@ class Program{
         while (true)
         {
             Console.WriteLine("-------------------------------------");
-            Console.WriteLine("1: If you have an existing Account.");
+            Console.WriteLine("1: Login for Existing Account.");
             Console.WriteLine("2: Create a New Account.");
             Console.WriteLine("3: Exit.");
             Console.Write("Enter Your Choice: ");
             int choice = Convert.ToInt32(Console.ReadLine());
 
-            switch(choice){
+            switch (choice)
+            {
                 case 1:
-                // Here making Atm processing
-                case 2:
-                    if(current_Account_Index == 50)
-                {
-                    Console.WriteLine("Maximum Account Limit Reached (50 Accounts).");
+                    Login();
                     break;
-                }
+                case 2:
+                    if (current_Account_Index == 50)
+                    {
+                        Console.WriteLine("Maximum Account Limit Reached (50 Accounts).");
+                        break;
+                    }
                     CreateNewAccount();
                     break;
                 case 3:
@@ -33,7 +37,7 @@ class Program{
                     break;
                 default:
                     Console.WriteLine("Invalid choice! Try again: ");
-                    break;    
+                    break;
             }
         }
 
@@ -41,110 +45,85 @@ class Program{
     // This Function is Helping to Create New Account
     private static void CreateNewAccount()
     {
-        Account_create a1 = new Account_create();
+        CurrentAccount a1 = new CurrentAccount();
+        bool account_status = false;
 
-                #region [Name Input]
-                Console.Write("Enter Your Name: ");
-                while(true){
-                    string input_name = Console.ReadLine();
-                    if(!string.IsNullOrWhiteSpace(input_name)){
-                        a1.Name = input_name;
-                        break;
-                    }
-                    else{
-                        Console.Write("Invalid Name! Try again: ");
-                    }
-                }
-                #endregion
+        Console.Clear();
+        Console.WriteLine("*** Account Creation ***");
+        Console.Write("Enter Your Name: ");
+        a1.Name = Validation.GetValidName();
 
-                #region [Father Name Input]
-                Console.Write("Enter Your Father Name: ");
-                while(true){
-                    string input_father_name = Console.ReadLine();
-                    if(!string.IsNullOrWhiteSpace(input_father_name)){
-                        a1.father = input_father_name;
-                        break;
-                    }
-                    else{
-                        Console.Write("Invalid Argument! Try again: ");
-                    }
-                }
-                #endregion 
+        Console.Write("Enter Your Father Name: ");
+        a1.Father_Name = Validation.GetValidFatherName();
 
-                #region [Input CNIC Number]
-                Console.Write("Enter Your CNIC (without Dash - ): ");
-                while(true){
-                    string input = Console.ReadLine();
-                    if(!string.IsNullOrWhiteSpace(input)){
-                        string NewInput = new string(input.Where(char.IsDigit).ToArray());
+        Console.Write("Enter Your CNIC (without Dash - ): ");
+        a1.CNIC = Validation.GetValidCNIC();
 
-                        if(NewInput.Length == 13){
-                            a1.cnic = NewInput;
-                            break;
-                        }
-                        else{
-                            Console.Write(NewInput.Length < 13 ?
-                             "Too Short ! Must be 13 Digits. Please Try again: ":
-                             "Too long! Must be 13 digits. Please Try again: " );
-                        }
-                    }
-                    else{
-                        Console.WriteLine("CNIC cannot be Empty! Try Again: ");
-                    }
-                }
-                #endregion
-                
-                #region [Input Age User]
-                Console.Write("Enter Your Age: ");
-                while(true){
-                int input_age = Convert.ToInt32(Console.ReadLine());
-                if(input_age <= 0){
-                    Console.Write("Invalid Input! Try Again: ");
-                    continue;
-                }
-                if(input_age >= 18){
-                    a1.age = input_age;
+        Console.Write("Enter Your Age: ");
+        a1.Age = Validation.GetValidAge();
+
+        Console.Write("Enter Your Date of Birth (DDMMYYYY): ");
+        a1.date_of_birth = Validation.GetValidDate();
+
+        Console.Write("Enter Your Pin (4-Digits only): ");
+        a1.Pin = Validation.GetValidPin();
+
+        account_status = true;
+        if (account_status) { }
+        a1.account_status(account_status);
+
+        // Adding new account into Array
+        accounts[current_Account_Index] = a1;
+        current_Account_Index++;
+        Console.Clear();
+        a1.DisplayInfo();
+    }
+    private static void Login()
+    {
+        if (current_Account_Index == 0)
+        {
+            Console.WriteLine("No Account Found ! Create a Account first:");
+            Console.WriteLine("Press any key to continue...");
+            Console.ReadKey();
+            return;
+        }
+        bool tryagain = true;
+        while (tryagain)
+        {
+            Console.Clear();
+            string cnic = "", pin = "";
+            try
+            {
+                Console.Write("\nEnter Your CNIC Without Dash (-):");
+                cnic = Validation.GetValidCNIC();
+                Console.Write("\nEnter Your PIN: ");
+                pin = Validation.GetValidPin();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error: " + ex.Message);
+                Console.WriteLine("Press any Key to try again...");
+                Console.ReadKey();
+                continue;
+            } 
+            bool loggedIn = false;
+            for (int i = 0; i < current_Account_Index; i++)
+            {
+                if (accounts[i] != null && cnic == accounts[i].CNIC && pin == accounts[i].Pin)
+                {
+                    TransactionBase.Wellcome_screen(accounts[i].Name, accounts[i].Account_Id);
+                    loggedIn = true;
+                    tryagain = false;
                     break;
                 }
-                else{
-                    Console.WriteLine("Error: You are under Age So don't create an Account. ");
-                    return;
-                    }
-                }
-                #endregion
-
-                #region [Input Date of birth]
-                Console.Write("Enter Your Date of Birth (DDMMYYYY): ");
-                while(true){
-                string input_dob = Console.ReadLine();
-                if(string.IsNullOrEmpty(input_dob) || input_dob.Length < 8){
-                    Console.Write("Invalid Input! Try again: ");
-                }
-                if(input_dob.Length == 8){
-                    a1.dob = input_dob;
-                    break;
-                  }
-                
-                }
-                #endregion
-
-                #region [Input Pin Passward]
-                Console.WriteLine("Enter Your Pin Password (4-Digits only): ");
-                while(true){
-                string input_pin = Console.ReadLine();
-                if(string.IsNullOrEmpty(input_pin) || input_pin.Length < 4){
-                    Console.Write("Invalid Input! Try again: ");
-                }
-                if(input_pin.Length == 4){
-                    a1.Pin = input_pin;
-                    break;
-                  } 
-                }
-                #endregion
-
-                // Adding new account into Array
-                accounts[current_Account_Index] = a1;
-                current_Account_Index++;
-                a1.DisplayInfo();
+            }
+            if (!loggedIn)
+            {
+                Console.WriteLine("Error : CNIC Or PIN is Incorrect!");
+                Console.WriteLine("Press (0) to Main Menu Or Any Key to Try Again...");
+                var Key = Console.ReadKey();
+                if (Key.KeyChar == '0') return;
+            }
+        }
     }
 }
