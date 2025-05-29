@@ -103,7 +103,6 @@ class Validation
                     Console.Write("Invalid date! Try again (DDMMYYYY): ");
                 }
             }
-
         }
     }
     public static string GetValidPin()
@@ -138,5 +137,116 @@ class Validation
         }
         return pin;
     }
-    
+    static public float? GetAmountValid(float balance)
+    {
+        while (true)
+        {
+            Console.Write("Enter amount: ");
+            string input = Console.ReadLine();
+
+            if (float.TryParse(input, out float amount))
+            {
+                if (balance < amount)
+                {
+                    Console.WriteLine("Your Balance is Insufficient!");
+                    return 0;
+                }
+                if (amount >= 0 && amount <= balance)
+                {
+                    return amount;
+                }
+
+                Console.WriteLine("Amount must be positive. Try again.");
+            }
+            else
+            {
+                Console.WriteLine("Invalid number format. Try again.");
+            }
+        }
+    }
+    static public string IsCNICExist(CurrentAccount[] a, int CAI)
+    {
+        while (true)
+        {
+            Console.Write("Enter CNIC (Without Dashes): ");
+            string CNIC = GetValidCNIC();
+            if (!(IsCNICSame(a, CNIC, CAI)))
+            {
+                return CNIC;
+            }
+            Console.WriteLine("This CNIC is Already Taken. Try another CNIC: ");
+        }
+    }
+    static private bool IsCNICSame(CurrentAccount[] a, string cnic, int CAI)
+    {
+        // CAI stands for Current Account Index
+        if (CAI == 0)
+        {
+            return false;
+        }
+        for (int i = 0; i < CAI; i++)
+        {
+            if (a[i] != null && a[i].CNIC == cnic)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+    static public string GetValidMobileNo()
+    {
+        while (true)
+        {
+            Console.WriteLine("Enter Your Phone No(11 Digits): ");
+            string input = Console.ReadLine();
+            if (!string.IsNullOrEmpty(input) && input.Length == 11)
+            {
+                return input;
+            }
+            else
+            {
+                Console.Write("Invalid Input! Try Again: ");
+            }
+        }
+    }
+    public static float GetAmountValid(string prompt)
+    {
+        while (true)
+        {
+            Console.WriteLine(prompt);
+            string input = Console.ReadLine();
+            if (float.TryParse(input, out float amount))
+            {
+                if (amount >= 50 && amount <= 500)
+                {
+                    return amount;
+                }
+                Console.WriteLine("Invalid Amount. Try again.");
+            }
+            else
+            {
+                Console.WriteLine("Invalid number format. Try again.");
+            }
+        }
+    }
+    public static string GetValidAccountNumber()
+    {
+        while (true)
+        {
+            string input = Console.ReadLine();
+            if (input.Length == 9)
+            {
+                return "CUR-" + input;
+            }
+            else
+            {
+                Console.Write("Invalid Input! Try Again: ");
+            }
+        }
+    }
+    static public int fees()
+    {
+        Random random = new Random();
+        return random.Next(1000, 1200);
+    }
 }
