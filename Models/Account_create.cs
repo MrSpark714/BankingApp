@@ -14,10 +14,11 @@ abstract class AccountBase{
     #endregion
 
     #region Common Propeties
-    public bool is_account_created;
+    // public bool is_account_created;
     public string Name
     {
-        get { return _name; } set { _name = value; }
+        get { return _name; }
+        set { _name = value; }
     }
     public int Age{
         get{return _age;} set{ _age = value;}
@@ -37,14 +38,21 @@ abstract class AccountBase{
     public string Pin{
          set{_pin = value;}  get{return _pin;}
     }
+    public float Balance
+    {
+        get{return _balance;} set{ _balance = value; }
+    }
+
     #endregion
-    
+
     #region Abstract Methods
     public abstract void DisplayInfo();
+
     #endregion
 
     #region Common Methods
-    protected void DisplayBasicInfo(){
+    protected void DisplayBasicInfo()
+    {
         Console.WriteLine("\n-------------------------------------");
         Console.WriteLine($"Your Name: {Name}");
         Console.WriteLine($"Your Father Name: {Father_Name}");
@@ -59,7 +67,7 @@ abstract class AccountBase{
 class CurrentAccount : AccountBase{
     private static int AccountCount = 1;
     public string GenerateAccountID(){
-        string id = $"CUR-2024{AccountCount.ToString("D5")}";
+        string id = $"CUR-2025{AccountCount.ToString("D5")}";
         AccountCount++;
         return id;
     }
@@ -78,6 +86,7 @@ class CurrentAccount : AccountBase{
         if (s == true)
         {
             Account_Id = GenerateAccountID();
+            Balance = 5000;
             return true;
         }
         else

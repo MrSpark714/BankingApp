@@ -1,5 +1,4 @@
-﻿using System;
-namespace BankingApp;
+﻿namespace BankingApp;
 
 class Program
 {
@@ -7,7 +6,7 @@ class Program
     private static int current_Account_Index = 0;
     public static void Main(string[] args)
     {
-
+        Console.Title = "Banking Application";
         Console.WriteLine("\n\tWellcome To Bank\n");
         while (true)
         {
@@ -16,7 +15,11 @@ class Program
             Console.WriteLine("2: Create a New Account.");
             Console.WriteLine("3: Exit.");
             Console.Write("Enter Your Choice: ");
-            int choice = Convert.ToInt32(Console.ReadLine());
+            if (!int.TryParse(Console.ReadLine(), out int choice))
+            {
+                Console.WriteLine("Invalid Input! Please enter a Number: ");
+                continue;
+            }
 
             switch (choice)
             {
@@ -32,7 +35,7 @@ class Program
                     CreateNewAccount();
                     break;
                 case 3:
-                    Console.WriteLine("*** Thanks For Using ***");
+                    Exit();
                     Environment.Exit(0);
                     break;
                 default:
@@ -40,7 +43,6 @@ class Program
                     break;
             }
         }
-
     }
     // This Function is Helping to Create New Account
     private static void CreateNewAccount()
@@ -56,8 +58,7 @@ class Program
         Console.Write("Enter Your Father Name: ");
         a1.Father_Name = Validation.GetValidFatherName();
 
-        Console.Write("Enter Your CNIC (without Dash - ): ");
-        a1.CNIC = Validation.GetValidCNIC();
+        a1.CNIC = Validation.IsCNICExist(accounts, current_Account_Index);
 
         Console.Write("Enter Your Age: ");
         a1.Age = Validation.GetValidAge();
@@ -90,14 +91,24 @@ class Program
         bool tryagain = true;
         while (tryagain)
         {
+            bool loggedIn = false;
             Console.Clear();
-            string cnic = "", pin = "";
+            string cnic, pin;
             try
             {
                 Console.Write("\nEnter Your CNIC Without Dash (-):");
                 cnic = Validation.GetValidCNIC();
                 Console.Write("\nEnter Your PIN: ");
                 pin = Validation.GetValidPin();
+
+                CurrentAccount account = FindAccount(cnic, pin);
+
+                if (account != null)
+                {
+                    TransactionBase.Wellcome_screen(account);
+                    tryagain = false;
+                    loggedIn = true;
+                }
             }
             catch (Exception ex)
             {
@@ -105,25 +116,44 @@ class Program
                 Console.WriteLine("Press any Key to try again...");
                 Console.ReadKey();
                 continue;
-            } 
-            bool loggedIn = false;
-            for (int i = 0; i < current_Account_Index; i++)
-            {
-                if (accounts[i] != null && cnic == accounts[i].CNIC && pin == accounts[i].Pin)
-                {
-                    TransactionBase.Wellcome_screen(accounts[i].Name, accounts[i].Account_Id);
-                    loggedIn = true;
-                    tryagain = false;
-                    break;
-                }
             }
+
             if (!loggedIn)
             {
                 Console.WriteLine("Error : CNIC Or PIN is Incorrect!");
                 Console.WriteLine("Press (0) to Main Menu Or Any Key to Try Again...");
-                var Key = Console.ReadKey();
+                var Key = Console.ReadKey(true);
                 if (Key.KeyChar == '0') return;
             }
         }
+    }
+    private static CurrentAccount FindAccount(string cnic, string pin)
+    {
+        for (int i = 0; i < current_Account_Index; i++)
+        {
+            if (accounts[i] != null && cnic == accounts[i].CNIC && pin == accounts[i].Pin)
+            {
+                return accounts[i];
+            }
+        }
+        return null;
+    }
+    public static CurrentAccount FindAccountNumber(string AccountNumber)
+    {
+        for (int i = 0; i < current_Account_Index; i++)
+        {
+            if (accounts[i] != null && AccountNumber == accounts[i].Account_Id)
+            {
+                return accounts[i];
+            }
+        }
+        return null;
+    }
+    static public void Exit()
+    {
+        Console.WriteLine("\t Thanks for Using Our Services!");
+        Console.WriteLine("Press Any Key to Complete Exit....");
+        Console.ReadKey(true);
+        return;
     }
 }
