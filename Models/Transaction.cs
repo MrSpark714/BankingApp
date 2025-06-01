@@ -1,7 +1,3 @@
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.Design;
-using System.Linq.Expressions;
-
 namespace BankingApp;
 
 class TransactionBase
@@ -42,7 +38,10 @@ class TransactionBase
                     BillPayment(account);
                     break;
                 case 6:
-                    Program.Exit();
+                    TransactionService.AccountDetails(account);
+                    break;
+                case 7:
+                    Services.Exit();
                     Environment.Exit(0);
                     break;
             }
@@ -57,7 +56,8 @@ class TransactionBase
         Console.WriteLine("3. Send Money.");
         Console.WriteLine("4. Fees Payment.");
         Console.WriteLine("5. Bill Payment.");
-        Console.WriteLine("6. Exit.");
+        Console.WriteLine("6. Account Detail.");
+        Console.WriteLine("7. Exit.");
         Console.WriteLine("0. Main Menu");
         Console.Write("Enter Your Choice: ");
     }
@@ -88,9 +88,7 @@ class TransactionBase
         string PhoneNo = Validation.GetValidMobileNo();
         float? RechargeAmount = Validation.GetAmountValid("Enter Amount (50 - 500): ");
         account.Balance -= RechargeAmount.Value;
-        Console.WriteLine("Mobile Recharge Suucessfully Done!");
-        Console.WriteLine("Press Any Key to Back...");
-        Console.ReadKey();
+        TransactionService.TransactionSlip(account, RechargeAmount.Value, PhoneNo);
     }
     static private void SendMoney(CurrentAccount account)
     {
@@ -99,7 +97,7 @@ class TransactionBase
         Console.Write("Enter Account Number.(Without CUR-): ");
         string account_number = Validation.GetValidAccountNumber();
 
-        CurrentAccount secondAccount = Program.FindAccountNumber(account_number);
+        CurrentAccount secondAccount = Services.FindAccountNumber(account_number);
         if (secondAccount == null)
         {
             Console.WriteLine($"{account_number} is Not found!");
@@ -110,9 +108,7 @@ class TransactionBase
         float? amount = Validation.GetAmountValid(account.Balance);
         account.Balance -= amount.Value;
         secondAccount.Balance += amount.Value;
-        Console.WriteLine($"Transfer {amount}$ to {secondAccount.Account_Id} Successfully.");
-        Console.WriteLine("Press any Key to back...");
-        Console.ReadKey(true);
+        TransactionService.TransactionSlip(account, secondAccount, amount.Value);
     }
     static private void FeesPayments(CurrentAccount account)
     {
@@ -121,9 +117,9 @@ class TransactionBase
         Console.WriteLine("-- Here You can Pay Your fees by Using your Student ID --");
         Console.Write("Enter Your Student ID: ");
         string StudentID = Console.ReadLine();
-        int fees = Validation.fees();
-        Report(account, StudentID, fees,"Student", "Fees Payment");
-        Payment(account, fees);
+        int fees = Services.fees();
+        TransactionService.Report(account, StudentID, fees, "Student", "Fees Payment");
+        TransactionService.Payment(account, fees,"Fees Payments", StudentID);
     }
     static private void BillPayment(CurrentAccount account)
     {
@@ -131,40 +127,8 @@ class TransactionBase
         Console.WriteLine("*** Bill Payments ***");
         Console.Write("Enter Your Bill ID: ");
         string Id = Console.ReadLine();
-        int BillAmount = Validation.fees();
-        Report(account, Id, BillAmount, "Bill", "Bill Payment");
-        Payment(account, BillAmount);
+        int BillAmount = Services.fees();
+        TransactionService.Report(account, Id, BillAmount, "Bill", "Bill Payment");
+        TransactionService.Payment(account, BillAmount, "Bill Payments", Id);
     }
-    static private void Report(CurrentAccount account, string ID, int amount, string Bill_Student_type, string Fees_Bill_Payment)
-    {
-        Console.WriteLine("-------------------------");
-        Console.WriteLine($"Your Name: {account.Name} ");
-        Console.WriteLine($"Your {Bill_Student_type} ID: {ID} ");
-        Console.WriteLine($"Your {Fees_Bill_Payment} is {amount}");
-        Console.WriteLine("-------------------------");
-    }
-    static private void Payment(CurrentAccount account, int Amount)
-    {
-        Console.Write("You want to Pay Bill Payment Press (Y/N): ");
-        var key = Console.ReadKey();
-        if (!(key.KeyChar == 'Y' || key.KeyChar == 'y'))
-        {
-            Console.WriteLine("\nYou dno't Pay Your Fees.");
-            Console.WriteLine("\nPress Any Key to back...");
-            Console.ReadKey(true);
-            return;
-        }
-        if ((int)CheckBalance(account) < Amount)
-        {
-            Console.WriteLine("Your Balance is Insufficient!");
-            Console.WriteLine("Press Any Key to back...");
-            Console.ReadKey(true);
-            return;
-        }
-        account.Balance -= Amount;
-        Console.WriteLine($"\nYour Bill Payment {Amount}$ is Successfully Payed!");
-        Console.WriteLine("Press Any Key to back...");
-        Console.ReadKey(true);
-        return;
-    }
-}
+}    

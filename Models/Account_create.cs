@@ -59,7 +59,8 @@ abstract class AccountBase{
         Console.WriteLine($"Your CNIC: {CNIC}");
         Console.WriteLine($"Your Age: {Age}");
         Console.WriteLine($"Your Date of Birth: {date_of_birth}");
-        Console.WriteLine($"Your Account ID : {_Account_Id}");
+        Console.WriteLine($"Your Account ID: {_Account_Id}");
+        Console.WriteLine($"Your Balance: {Balance} PKR");
     }
     #endregion
 }
@@ -77,7 +78,7 @@ class CurrentAccount : AccountBase{
         Console.WriteLine("Account Type : Current");
         Console.WriteLine("*** Account Created Successfully ***");
         Console.WriteLine("--------------------------------------\n");
-        Console.WriteLine("=> Press Any key to go Main Menu.");
+        Console.WriteLine(" Press Any key to go Main Menu.");
         Console.ReadKey(true);
         Console.Clear();
     }
