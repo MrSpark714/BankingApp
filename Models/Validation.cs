@@ -244,9 +244,4 @@ class Validation
             }
         }
     }
-    static public int fees()
-    {
-        Random random = new Random();
-        return random.Next(1000, 1200);
-    }
 }
